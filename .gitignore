@@ -17,6 +17,20 @@ leapc-cffi/src/leapc_cffi/*.lib
 leapc-cffi/src/leapc_cffi/*.dylib
 leapc-cffi/src/leapc_cffi/*.so
 
+example_nakazono/
+implementation_plan.md
+leapc-cffi/leapc_cffi-0.0.1/
+leapmotion_handtracking.code-workspace
+record_and_visualize260120.py
+record_handtracking.py
+usb_io2_0_push_button_sample.py
+usb_io2_0_push_button_sample_port_j2_3.py
+
+examples/visualizer.py
+leapc-cffi/src/scripts/cffi_build.py
+
+.gitignore
+
 *.pyc
 *.pyd
 usb_io2_0プッシュボタンサンプルコード.py

@@ -74,7 +74,7 @@ def sanitise_leapc_header(input_str):
 
 
 leapc_header_fpath = os.path.join(_RESOURCE_DIRECTORY, "LeapC.h")
-with open(leapc_header_fpath) as fp:
+with open(leapc_header_fpath, encoding='utf-8') as fp:
     leapc_header = fp.read()
 
 cffi_cdef = sanitise_leapc_header(leapc_header)
