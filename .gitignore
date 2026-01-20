@@ -19,3 +19,11 @@ leapc-cffi/src/leapc_cffi/*.so
 
 *.pyc
 *.pyd
+usb_io2_0プッシュボタンサンプルコード.py
+
+# Recording data
+data/
+*.h5
+
+# Claude configuration
+.claude/
