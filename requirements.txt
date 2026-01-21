@@ -17,8 +17,8 @@ h5py>=3.0.0
 # Keyboard input monitoring
 pynput>=1.7.0
 
-# USB device communication
-pyusb>=1.2.0
+# USB-HID device communication (for USB-IO 2.0)
+hidapi>=0.12.0
 
 # Leap Motion SDK
 # Note: Install separately from Ultraleap's official repository
