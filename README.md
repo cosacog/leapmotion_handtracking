@@ -1,189 +1,189 @@
 # Leap Motion Hand Tracking with USB-IO Integration
 
-Leap Motion hand tracking system integrated with USB-IO 2.0 trigger device for synchronized data recording.
+USB-IO 2.0トリガーデバイスと統合したLeap Motionハンドトラッキングシステムで、同期データ記録を実現します。
 
-## Project Overview
+## プロジェクト概要
 
-This project combines Leap Motion hand tracking with USB-IO 2.0 device for precise timestamp synchronization. The system records hand tracking data with external trigger signals, enabling synchronized data collection for experimental setups.
+このプロジェクトは、Leap MotionハンドトラッキングとUSB-IO 2.0デバイスを組み合わせ、高精度なタイムスタンプ同期を実現します。外部トリガー信号と共にハンドトラッキングデータを記録し、実験セットアップにおける同期データ収集を可能にします。
 
-## Key Features
+## 主な機能
 
-- **High-precision timestamp synchronization** (~100ns resolution using `time.perf_counter()`)
-- **Event-driven USB-IO monitoring** with edge detection callbacks
-- **Thread-safe implementation** with 4 concurrent threads:
-  - Leap Motion listener thread
-  - USB-IO monitor thread
-  - HDF5 writer thread
-  - Main visualization thread
-- **Real-time visualization** with OpenCV
-- **HDF5 data format** for efficient storage with chunking
-- **Frame drop prevention** with queue-based buffering
+- **高精度タイムスタンプ同期** (`time.perf_counter()`による約100nsの分解能)
+- **イベント駆動型USB-IOモニタリング** (エッジ検出コールバック付き)
+- **スレッドセーフな実装** (4つの並行スレッド):
+  - Leap Motionリスナースレッド
+  - USB-IOモニタースレッド
+  - HDF5ライタースレッド
+  - メイン可視化スレッド
+- **OpenCVによるリアルタイム可視化**
+- **HDF5データ形式** (チャンキングによる効率的なストレージ)
+- **フレームドロップ防止** (キューベースのバッファリング)
 
-## Project Structure
+## プロジェクト構造
 
-See [docs/PROJECT_STRUCTURE.md](docs/PROJECT_STRUCTURE.md) for detailed file descriptions and directory organization.
+詳細なファイル説明とディレクトリ構成については、[docs/PROJECT_STRUCTURE.md](docs/PROJECT_STRUCTURE.md)を参照してください。
 
-## Installation
+## インストール
 
-### Prerequisites
+### 前提条件
 
-1. **Ultraleap Gemini SDK** (5.17+)
-   - Download from [Ultraleap Developer Site](https://developer.leapmotion.com/tracking-software-download)
-   - Install to default location or set `LEAPSDK_INSTALL_LOCATION` environment variable
+1. **Ultraleap Gemini SDK** (5.17以上)
+   - [Ultraleap Developer Site](https://developer.leapmotion.com/tracking-software-download)からダウンロード
+   - デフォルトの場所にインストールするか、`LEAPSDK_INSTALL_LOCATION`環境変数を設定
 
-2. **USB-IO 2.0 Device** (optional, for trigger functionality)
-   - Driver installation required for Windows
+2. **USB-IO 2.0デバイス** (オプション、トリガー機能用)
+   - Windowsではドライバーのインストールが必要
 
-### Setup
+### セットアップ
 
 ```bash
-# Clone the repository
+# リポジトリのクローン
 git clone <repository-url>
 cd leapmotion_handtracking
 
-# Create and activate virtual environment
+# 仮想環境の作成と有効化
 python -m venv venv
-venv\Scripts\activate  # On Windows
-# source venv/bin/activate  # On Linux/Mac
+venv\Scripts\activate  # Windows
+# source venv/bin/activate  # Linux/Mac
 
-# Install dependencies
+# 依存関係のインストール
 pip install -r requirements.txt
 
-# Install Leap Python API
+# Leap Python APIのインストール
 pip install -e leapc-python-api
 ```
 
-## Usage
+## 使い方
 
-### Main Recording Application
+### メイン記録アプリケーション
 
-Run from the project root directory:
+プロジェクトルートディレクトリから実行:
 
 ```bash
 python record_with_trigger.py
 ```
 
-**Controls:**
-- **SPACE key**: Mark task status = 1 (for manual event marking)
-- **'q' or ESC**: Stop recording
-- **Close window**: Stop recording
+**操作方法:**
+- **SPACEキー**: タスクステータス = 1をマーク (手動イベントマーキング用)
+- **'q'またはESC**: 記録を停止
+- **ウィンドウを閉じる**: 記録を停止
 
-**Output:**
-- Data saved to `data/leap_recording_trigger_YYYYMMDD_HHMMSS.h5`
-- HDF5 file contains:
-  - `leap_timestamp`: Original Leap timestamps (microseconds)
-  - `system_timestamp`: Synchronized system time (seconds, perf_counter base)
-  - `task_status`: SPACE key state (0/1)
-  - `trigger_status`: USB-IO trigger state (0/1)
-  - `right/left`: Hand tracking data (palm, wrist, elbow, fingers)
+**出力:**
+- データは`data/leap_recording_trigger_YYYYMMDD_HHMMSS.h5`に保存
+- HDF5ファイルの内容:
+  - `leap_timestamp`: オリジナルのLeapタイムスタンプ (マイクロ秒)
+  - `system_timestamp`: 同期されたシステム時刻 (秒、perf_counterベース)
+  - `task_status`: SPACEキーの状態 (0/1)
+  - `trigger_status`: USB-IOトリガーの状態 (0/1)
+  - `right/left`: ハンドトラッキングデータ (手のひら、手首、肘、指)
 
-### Testing USB-IO Monitor
+### USB-IOモニターのテスト
 
 ```bash
 cd tests
 python test_usb_io_monitor.py
 ```
 
-This will test the USB-IO device connectivity and edge detection.
+USB-IOデバイスの接続とエッジ検出をテストします。
 
-## Technical Specifications
+## 技術仕様
 
-- **Leap Motion sampling rate**: 90 Hz
-- **USB-IO polling interval**: 100 μs (0.0001 seconds)
-- **Timestamp precision**: ~100 nanoseconds (Windows)
-- **HDF5 save interval**: 0.5 seconds
-- **Frame queue size**: 10,000 frames
-- **USB-IO pin**: J2-0 (configurable in `src/record_with_trigger.py`)
+- **Leap Motionサンプリングレート**: 90 Hz
+- **USB-IOポーリング間隔**: 100 μs (0.0001秒)
+- **タイムスタンプ精度**: 約100ナノ秒 (Windows)
+- **HDF5保存間隔**: 0.5秒
+- **フレームキューサイズ**: 10,000フレーム
+- **USB-IOピン**: J2-0 (`src/record_with_trigger.py`で設定可能)
 
-## Architecture
+## アーキテクチャ
 
-### Timestamp Synchronization
+### タイムスタンプ同期
 
-All timestamps use `time.perf_counter()` as a common base:
-- **Leap Motion**: Hardware timer converted to system time
-- **USB-IO**: Direct perf_counter timestamps
-- **Precision**: ~100ns on Windows (vs 15.6ms for `time.time()`)
+すべてのタイムスタンプは`time.perf_counter()`を共通ベースとして使用:
+- **Leap Motion**: ハードウェアタイマーをシステム時刻に変換
+- **USB-IO**: 直接perf_counterタイムスタンプを使用
+- **精度**: Windowsで約100ns (`time.time()`の15.6msと比較)
 
-### Threading Model
+### スレッドモデル
 
-1. **Leap Listener Thread**: Captures hand tracking events
-2. **USB-IO Monitor Thread**: Polls USB-IO device at 100μs intervals
-3. **Writer Thread**: Saves buffered data to HDF5 every 0.5s
-4. **Main Thread**: Handles OpenCV visualization and user input
+1. **Leap Listenerスレッド**: ハンドトラッキングイベントをキャプチャ
+2. **USB-IO Monitorスレッド**: 100μs間隔でUSB-IOデバイスをポーリング
+3. **Writerスレッド**: 0.5秒ごとにバッファされたデータをHDF5に保存
+4. **Mainスレッド**: OpenCV可視化とユーザー入力を処理
 
-### Thread Safety
+### スレッド安全性
 
-- `LatestFrameContainer`: Uses `threading.Lock()` for safe frame sharing
-- `queue.Queue`: Thread-safe buffer between Leap listener and writer
-- No shared state between USB-IO monitor and other threads (callback-based)
+- `LatestFrameContainer`: `threading.Lock()`を使用した安全なフレーム共有
+- `queue.Queue`: Leap listenerとwriter間のスレッドセーフバッファ
+- USB-IOモニターと他のスレッド間に共有状態なし (コールバックベース)
 
-## Development
+## 開発
 
-### Running Tests
+### テストの実行
 
 ```bash
-# USB-IO monitor test
+# USB-IOモニターテスト
 cd tests
 python test_usb_io_monitor.py
 ```
 
-### Archived Files
+### アーカイブされたファイル
 
-Development history files are preserved in `archive/` directory. See `archive/README_ARCHIVE.md` for details.
+開発履歴ファイルは`archive/`ディレクトリに保存されています。詳細は`archive/README_ARCHIVE.md`を参照してください。
 
-**Note**: Archived files are for reference only. Use `src/record_with_trigger.py` for production.
+**注意**: アーカイブファイルは参照用です。本番環境では`src/record_with_trigger.py`を使用してください。
 
-## Troubleshooting
+## トラブルシューティング
 
-### Issue: High precision timer fails to initialize
+### 問題: 高精度タイマーの初期化に失敗
 
-**Symptom**: Program exits with "High precision timer initialization failed"
+**症状**: "High precision timer initialization failed"でプログラムが終了
 
-**Solution**: This is expected behavior. The timer is critical for USB-IO synchronization. If it fails, data integrity cannot be guaranteed.
+**解決策**: これは予期された動作です。タイマーはUSB-IO同期に不可欠で、失敗した場合はデータの整合性を保証できません。
 
-### Issue: USB-IO device not found
+### 問題: USB-IOデバイスが見つからない
 
-**Symptom**: "Warning: Failed to open USB-IO device"
+**症状**: "Warning: Failed to open USB-IO device"
 
-**Solution**:
-- Check USB-IO device connection
-- Install USB-IO drivers
-- Program will continue without trigger functionality
+**解決策**:
+- USB-IOデバイスの接続を確認
+- USB-IOドライバーをインストール
+- プログラムはトリガー機能なしで続行します
 
-### Issue: Leap Motion not detected
+### 問題: Leap Motionが検出されない
 
-**Symptom**: No frames received, empty visualization
+**症状**: フレームが受信されない、空の可視化
 
-**Solution**:
-- Ensure Ultraleap Tracking software is running
-- Check device connection
-- Verify Leap Motion is working with official Ultraleap Visualizer
+**解決策**:
+- Ultraleap Trackingソフトウェアが実行中であることを確認
+- デバイスの接続を確認
+- 公式のUltraleap VisualizerでLeap Motionが動作することを確認
 
-## Documentation
+## ドキュメント
 
-For detailed project structure and file descriptions, see [Project Structure Documentation](docs/PROJECT_STRUCTURE.md).
+詳細なプロジェクト構造とファイル説明については、[プロジェクト構造ドキュメント](docs/PROJECT_STRUCTURE.md)を参照してください。
 
-Additional technical documentation:
-- **English**:
-  - `docs/USB_IO_INTEGRATION.md` - USB-IO integration details
-  - `docs/TIMESTAMP_SYNC.md` - Timestamp synchronization explanation
+追加の技術ドキュメント:
+- **英語**:
+  - `docs/USB_IO_INTEGRATION.md` - USB-IO統合の詳細
+  - `docs/TIMESTAMP_SYNC.md` - タイムスタンプ同期の説明
 
-- **Japanese**:
+- **日本語**:
   - `docs/PROJECT_STRUCTURE.md` - 詳細なプロジェクト構造説明
 
-## License
+## ライセンス
 
-See LICENSE.md for details.
+詳細はLICENSE.mdを参照してください。
 
-## Support
+## サポート
 
-For issues related to:
+以下に関する問題について:
 - **Leap Motion SDK**: [Ultraleap Support](mailto:support@ultraleap.com)
-- **This project**: Open an issue on GitHub
+- **このプロジェクト**: GitHubでissueを開いてください
 
-## Version History
+## バージョン履歴
 
-- **v1.0.0** (2026-01-21): Initial structured release
-  - Event-driven USB-IO integration
-  - High-precision timestamp synchronization
-  - Stable multi-threaded architecture
+- **v1.0.0** (2026-01-21): 初回構造化リリース
+  - イベント駆動型USB-IO統合
+  - 高精度タイムスタンプ同期
+  - 安定したマルチスレッドアーキテクチャ
