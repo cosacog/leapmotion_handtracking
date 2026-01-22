@@ -21,45 +21,7 @@ This project combines Leap Motion hand tracking with USB-IO 2.0 device for preci
 
 ## Project Structure
 
-```
-leapmotion_handtracking/
-├── README.md                    # Ultraleap official README
-├── README_PROJECT.md           # This file (project-specific documentation)
-├── requirements.txt            # Python dependencies
-├── .gitignore                  # Git ignore rules
-│
-├── record_with_trigger.py      # Main launcher script (run from project root)
-│
-├── src/                        # Main source code
-│   ├── __init__.py
-│   ├── record_with_trigger.py  # Main recording application
-│   ├── usb_io_monitor.py       # USB-IO event-driven monitoring
-│   └── timestamp_sync.py       # High-precision timestamp synchronization
-│
-├── tests/                      # Test scripts
-│   ├── __init__.py
-│   └── test_usb_io_monitor.py  # USB-IO monitor unit test
-│
-├── archive/                    # Archived development files
-│   ├── README_ARCHIVE.md       # Archive documentation
-│   ├── record_and_visualize.py
-│   ├── record_simple.py
-│   └── test_record_trigger.py
-│
-├── docs/                       # Technical documentation
-│   ├── README_PROJECT_STRUCTURE.md  # Detailed project structure (Japanese)
-│   ├── USB_IO_INTEGRATION.md        # USB-IO integration technical doc
-│   └── TIMESTAMP_SYNC.md            # Timestamp synchronization details
-│
-├── data/                       # Recorded data (gitignored)
-│   └── leap_recording_trigger_YYYYMMDD_HHMMSS.h5
-│
-├── examples/                   # Example scripts
-│   └── visualiser.py
-│
-├── leapc-cffi/                 # Leap Motion C FFI bindings
-└── leapc-python-api/           # Leap Motion Python API
-```
+See [docs/PROJECT_STRUCTURE.md](docs/PROJECT_STRUCTURE.md) for detailed file descriptions and directory organization.
 
 ## Installation
 
@@ -199,12 +161,15 @@ Development history files are preserved in `archive/` directory. See `archive/RE
 
 ## Documentation
 
+For detailed project structure and file descriptions, see [Project Structure Documentation](docs/PROJECT_STRUCTURE.md).
+
+Additional technical documentation:
 - **English**:
   - `docs/USB_IO_INTEGRATION.md` - USB-IO integration details
   - `docs/TIMESTAMP_SYNC.md` - Timestamp synchronization explanation
 
 - **Japanese**:
-  - `docs/README_PROJECT_STRUCTURE.md` - 詳細なプロジェクト構造説明
+  - `docs/PROJECT_STRUCTURE.md` - 詳細なプロジェクト構造説明
 
 ## License
 
